@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+    <title>网站后台管理模版</title>
+    <link rel="stylesheet" type="text/css" href="./layui/css/layui.css"/>
+    <link rel="stylesheet" type="text/css" href="./css/admin.css"/>
+    <script src="./js/jquery.js"></script>
+    <script>
+        $(function () {
+            $.ajax({
+                type: 'get',
+                url: './model/findAllModel',
+                dataType: 'json',
+                success: function (data) {
+                    if (data.status) {
+                        $('#tbm').empty();
+                        $(data.list).each(function (i, model) {
+                            $('#tbm').append('<tr>\n' +
+                                '<td><input type="checkbox" name="" lay-skin="primary" data-id="' + model.id + '"></td>\n' +
+                                '<td class="hidden-xs">' + model.id + '</td>\n' +
+                                '<td class="hidden-xs">\n' +
+                                '    <input type="text" name="title" autocomplete="off"\n' +
+                                '           class="layui-input" value="' + (i + 1) + '" data-id="1"></td>\n' +
+                                '<td>' + model.modelName + '</td>\n' +
+                                '<td>\n' +
+                                '    <button id = "btstatus' + model.id + '" lay-filter = "btn" name="status" value="' + model.status + '" class="statusBtn layui-btn layui-btn-mini layui-btn-normal table-list-status"\n' +
+                                '            data-status=' + model.status + '>显示</button>\n' +
+                                '</td>\n' +
+                                '<td>\n' +
+                                '    <div class="layui-inline">\n' +
+                                // '        <button class="layui-btn layui-btn-mini layui-btn-normal  add-btn" data-id="1"\n' +
+                                // '                data-url="menu-add2.html"><i class="layui-icon">&#xe654;</i></button>\n' +
+                                '        <button class="layui-btn layui-btn-mini layui-btn-normal  edit-btn" data-id="' + model.id + '"\n' +
+                                '                data-url="./menu-add2"><i class="layui-icon">&#xe642;</i></button>\n' +
+                                '        <button class="layui-btn layui-btn-mini layui-btn-danger del-btn" data-id="1"\n' +
+                                '                data-url="del.html"><i class="layui-icon">&#xe640;</i></button>\n' +
+                                '    </div>\n' +
+                                '</td>\n' +
+                                '</tr>');
+                            if (model.status == 0) {
+                                $('#btstatus' + model.id).removeClass('layui-btn-normal').addClass('layui-btn-warm').html('隐藏').attr('data-status', 0);
+                            } else {
+                                $('#btstatus' + model.id).html('显示').attr('data-status', 1);
+                            }
+                        });
+                    }
+                },
+                error: function () {
+                    alert("数据加载失败");
+                }
+            });
+
+            $('#search').click(function () {
+                var message = $('#searchModel').val();
+                $.ajax({
+                    type : 'get',
+                    url : './model/findByModelNames?message=' + message,
+                    dataType : 'json',
+                    success : function (data) {
+                        if (data.status) {
+                            $('#tbm').empty();
+                            $(data.list).each(function (i, model) {
+                                $('#tbm').append('<tr>\n' +
+                                    '<td><input type="checkbox" name="" lay-skin="primary" data-id="' + model.id + '"></td>\n' +
+                                    '<td class="hidden-xs">' + model.id + '</td>\n' +
+                                    '<td class="hidden-xs">\n' +
+                                    '    <input type="text" name="title" autocomplete="off"\n' +
+                                    '           class="layui-input" value="' + (i + 1) + '" data-id="1"></td>\n' +
+                                    '<td>' + model.modelName + '</td>\n' +
+                                    '<td>\n' +
+                                    '    <button id = "btstatus' + model.id + '" lay-filter = "btn" name="status" value="' + model.status + '" class="statusBtn layui-btn layui-btn-mini layui-btn-normal table-list-status"\n' +
+                                    '            data-status=' + model.status + '>显示</button>\n' +
+                                    '</td>\n' +
+                                    '<td>\n' +
+                                    '    <div class="layui-inline">\n' +
+                                    // '        <button class="layui-btn layui-btn-mini layui-btn-normal  add-btn" data-id="1"\n' +
+                                    // '                data-url="menu-add2.html"><i class="layui-icon">&#xe654;</i></button>\n' +
+                                    '        <button class="layui-btn layui-btn-mini layui-btn-normal  edit-btn" data-id="' + model.id + '"\n' +
+                                    '                data-url="./menu-add2"><i class="layui-icon">&#xe642;</i></button>\n' +
+                                    '        <button class="layui-btn layui-btn-mini layui-btn-danger del-btn" data-id="1"\n' +
+                                    '                data-url="del.html"><i class="layui-icon">&#xe640;</i></button>\n' +
+                                    '    </div>\n' +
+                                    '</td>\n' +
+                                    '</tr>');
+                                if (model.status == 0) {
+                                    $('#btstatus' + model.id).removeClass('layui-btn-normal').addClass('layui-btn-warm').html('隐藏').attr('data-status', 0);
+                                } else {
+                                    $('#btstatus' + model.id).html('显示').attr('data-status', 1);
+                                }
+                            })
+                        }
+                    },
+                    error : function (error) {
+                        alert('查询失败');
+                    }
+                })
+            })
+
+        })
+    </script>
+</head>
+
+<body>
+<div class="page-content-wrap">
+    <form class="layui-form">
+        <div class="layui-form-item">
+            <div class="layui-inline tool-btn">
+                <button class="layui-btn layui-btn-small layui-btn-normal addBtn hidden-xs" data-id="0"
+                        data-url="./menu-add2"><i class="layui-icon">&#xe654;</i></button>
+                <button class="layui-btn layui-btn-small layui-btn-warm listOrderBtn hidden-xs"
+                        data-url="/admin/category/listorderall.html"><i class="iconfont">&#xe656;</i></button>
+            </div>
+            <div class="layui-inline">
+                <input type="text" id="searchModel" name="title" placeholder="请输入要查询的模块" autocomplete="off" class="layui-input">
+            </div>
+            <div class="layui-inline">
+                <select name="category" lay-filter="status">
+                    <option value="0">主导航</option>
+                    <option value="010">关于我们</option>
+                    <option value="021">产品中心</option>
+                    <option value="021">新闻中心</option>
+                    <option value="021">业务范围</option>
+                    <option value="021">联系我们</option>
+                    <option value="021">在线留言</option>
+                </select>
+            </div>
+            <input type="button" class="layui-btn layui-btn-normal" id="search" value="搜索">
+        </div>
+    </form>
+    <div class="layui-form" id="table-list">
+        <table class="layui-table" lay-even lay-skin="nob">
+            <colgroup>
+                <col width="50">
+                <col class="hidden-xs" width="50">
+                <col class="hidden-xs" width="100">
+                <col>
+                <col width="80">
+                <col width="150">
+            </colgroup>
+            <thead>
+            <tr>
+                <th><input type="checkbox" name="" lay-skin="primary" lay-filter="allChoose"></th>
+                <th class="hidden-xs">ID</th>
+                <th class="hidden-xs">排序</th>
+                <th>菜单名称</th>
+                <th>状态</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody id="tbm">
+
+            </tbody>
+        </table>
+    </div>
+</div>
+<script src="./layui/layui.js" type="text/javascript" charset="utf-8"></script>
+<script src="./js/common.js" type="text/javascript" charset="utf-8"></script>
+<script>
+    layui.use(['form', 'jquery', 'layer', 'dialog', 'form'], function () {
+        var $ = layui.jquery, layer = layui.layer, form = layui.form();
+
+        //修改状态
+        $('#table-list').on('click', '.table-list-status', function () {
+            var That = $(this);
+            var status = That.attr('data-status');
+            var id = That.parent().siblings().eq(0).find('input').attr('data-id');
+            if (status == 0) {
+                status = 1;
+            } else {
+                status = 0;
+            }
+            $.ajax({
+                type: 'post',
+                url: './model/updateStatus',
+                data: {id: id, status: status},
+                dataType: 'json',
+                success: function (data) {
+                    if (data.status) {
+                        console.log(status);
+                        if (status == 0) {
+                            $('#btstatus' + id).removeClass('layui-btn-normal').addClass('layui-btn-warm').html('隐藏').attr('data-status', '0');
+                        } else if (status == 1) {
+                            $('#btstatus' + id).removeClass('layui-btn-warm').addClass('layui-btn-normal').html('显示').attr('data-status', '1');
+                        }
+                        layer.msg(data.msg, {icon: 6, time: 1400});
+                    } else {
+                        layer.msg(data.msg, {icon: 6, time: 1400});
+                    }
+                },
+                error: function (error) {
+                    alert("修改状态失败");
+                }
+            })
+        });
+
+        // form.on('submit(search)',function (data) {
+        //
+        // });
+
+        // $(document).on('click','.statusBtn',function (obj) {
+        //     console.log(obj);
+        // });
+
+    });
+
+
+</script>
+</body>
+
+</html>

@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+    <title>网站后台管理模版</title>
+    <link rel="stylesheet" type="text/css" href="./layui/css/layui.css"/>
+    <link rel="stylesheet" type="text/css" href="./css/admin.css"/>
+    <!--<script src="./js/serializeJson.js" type="text/javascript"></script>-->
+    <script type="text/javascript" src="./js/jquery.js"></script>
+    <script>
+        $(function () {
+            var str = window.location.search;
+            var id = str.substr(str.lastIndexOf("id") + 3, str.length);
+            if (id != 0) {
+                $.ajax({
+                    type : 'get',
+                    url : './model/findModelById/' + id,
+                    dataType : 'json',
+                    success : function (data) {
+                        if (data.status) {
+                            $('#id').val(id);
+                            $('#modelName').val(data.t.modelName);
+                            $('#remark').val(data.t.remark);
+                            $('#icon').val(data.t.icon);
+                            if (data.t.status == 0) {
+                                $('#status').removeAttr('checked');
+                            }
+                        }
+                    },
+                    error : function () {
+                        alert("加载model失败");
+                    }
+                });
+            }
+        })
+    </script>
+</head>
+<body>
+<div class="wrap-container">
+    <form class="layui-form" id="form2" style="width: 90%;padding-top: 20px;">
+        <input type="hidden" id="id" name="id">
+        <div class="layui-form-item">
+            <label class="layui-form-label">父级：</label>
+            <div class="layui-input-block">
+                <select name="category2" lay-verify="required">
+                    <option value="0">/</option>
+                    <option value="010">首页</option>
+                    <option value="010">关于我们</option>
+                    <option value="021">产品中心</option>
+                    <option value="021">新闻中心</option>
+                    <option value="021">业务范围</option>
+                    <option value="021">联系我们</option>
+                    <option value="021">在线留言</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">模块名称：</label>
+            <div class="layui-input-block">
+                <input type="text" id="modelName" name="modelName" required lay-verify="required" placeholder="请输入模块名称"
+                       autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">备注：</label>
+            <div class="layui-input-block">
+                <input type="text" id="remark" name="remark"  placeholder="请输入备注"
+                       autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">打开方式：</label>
+            <div class="layui-input-block">
+                <select name="category" lay-verify="required">
+                    <option value="0">默认</option>
+                    <option value="010">新窗口打开</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">图标：</label>
+            <div class="layui-input-block">
+                <input type="text" id="icon" name="icon" disabled placeholder="留作扩展" autocomplete="off"
+                       class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">状态：</label>
+            <div class="layui-input-block">
+                <input type="hidden" id="statusT" name="status">
+                <input type="checkbox" checked id="status" lay-skin="switch" lay-filter="switchTest" lay-text="ON|OFF">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button id="submit" class="layui-btn layui-btn-normal" lay-submit lay-filter="formDemo">立即提交</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script src="./layui/layui.js" type="text/javascript" charset="utf-8"></script>
+<script>
+    //Demo
+    layui.use(['form', 'layer', 'jquery'], function () {
+        var form = layui.form(), $ = layui.jquery, layer = layui.layer; form.render();
+        // var status = 1;
+        // form.on('switch(switchTest)', function (obj) {
+        //     if (obj.elem.checked) {
+        //         status = 1;
+        //     } else {
+        //         status = 0;
+        //     }
+        // });
+        //监听提交
+        form.on('submit(formDemo)', function (data) {
+            var id = $('#id').val();
+            var modelName = $('#modelName').val();
+            var remark = $('#remark').val();
+            var status = $('#status').prop('checked')? 1 : 0;
+
+            // var icon = $('#icon').val();  // 图标
+            $.ajax({
+                type: 'post',
+                url: './model/addModel',
+                data: {'id' : id,'modelName': modelName, 'remark': remark, 'status': status},
+                dataType: 'json',
+                success: function (data) {
+                    if (data.status) {
+                        layer.msg(data.msg, {icon: 6, time: 1800}, function (i) {
+                            layer.close(i);
+                            window.parent.location.reload();
+                            var index = parent.layer.getFrameIndex(window.name);
+                            parent.layer.close(index);
+                        });
+                    }
+                },
+                error: function (error) {
+                    alert('添加model失败');
+                }
+            });
+            return false;
+        });
+    });
+</script>
+</body>
+
+</html>

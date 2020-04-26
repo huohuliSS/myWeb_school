@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${title}">Title</title>
+    <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.js"></script>
+    <script>
+        $(function () {
+            //监控内容文档中所有a标签的点击事件
+            $('#content').on('click', 'a', function () {
+                var sourceUrl = $(this).attr("href");
+                var title = $(this).attr("title");
+                //下载资源
+                var sourceUploadURL = "http://localhost:8080/context/downloadAttactment";
+                $("#sourceUploadForm").attr('action', sourceUploadURL);
+                $("#sourceUrl").val(sourceUrl);
+                $('#title').val(title);
+                $("#sourceUploadForm").submit();
+                return false;
+            });
+        })
+    </script>
+</head>
+<body>
+
+<!--<h1 style="text-align: center;">-->
+    <!--<span th:text="${title}" style="color: rgb(51, 51, 51); font-family: &quot;Microsoft YaHei&quot;; font-size: 24px; font-weight: 700; text-align: center; background-color: rgb(255, 255, 255);">-->
+
+    <!--</span>-->
+<!--</h1>-->
+
+<!--<h3 style="text-align: left">-->
+    <!--作者： <span th:text="${author}"></span>-->
+    <!--发布日期： <span th:text="${createDate}"></span>-->
+<!--</h3>-->
+
+<!--<p th:text="${title}"></p>-->
+<div id="content" th:utext="${content}">
+
+</div>
+
+<!-- 资源下载隐藏form -->
+<form action="" id="sourceUploadForm" method="post" enctype="multipart/form-data" style="display: none;">
+    <input type="hidden" name="sourceUrl" id="sourceUrl"/>
+    <input type="hidden" id="title" name="title">
+</form>
+</body>
+</html>
