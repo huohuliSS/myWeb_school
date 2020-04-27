@@ -108,6 +108,11 @@
             <scope>system</scope>
             <systemPath>${basedir}/src/main/resources/lib/ueditor-1.1.2.jar</systemPath >
         </dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.2.46</version>
+        </dependency>
 
 
     </dependencies>

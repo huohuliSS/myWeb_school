@@ -1,6 +1,6 @@
 package com.qhw.controller;
 
-import com.qhw.common.FastDFSClient;
+import com.qhw.util.FastDFSClient;
 import com.qhw.common.Result;
 import com.qhw.common.ResultT;
 import com.qhw.pojo.Context;

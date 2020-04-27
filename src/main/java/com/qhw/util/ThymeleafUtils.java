@@ -1,4 +1,4 @@
-package com.qhw.common;
+package com.qhw.util;
 
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;

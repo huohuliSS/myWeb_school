@@ -1,6 +1,6 @@
 package com.qhw.controller;
 
-import com.qhw.common.FastDFSClient;
+import com.qhw.util.FastDFSClient;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;

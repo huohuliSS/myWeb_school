@@ -1,9 +1,8 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
     <title>后台登录</title>
     <link rel="stylesheet" type="text/css" href="./layui/css/layui.css"/>
     <link rel="stylesheet" type="text/css" href="./css/login.css"/>
@@ -14,23 +13,19 @@
     <div class="m-login">
         <h3>后台系统登录</h3>
         <div class="m-login-warp">
-            <form class="layui-form">
+            <form class="layui-form" action="/user/login" method="post">
                 <div class="layui-form-item">
-                    <input type="text" name="title" required lay-verify="required" placeholder="用户名" autocomplete="off"
-                           class="layui-input">
+                    <input type="text" name="username" required lay-verify="required" placeholder="用户名" autocomplete="off" class="layui-input">
                 </div>
                 <div class="layui-form-item">
-                    <input type="text" name="password" required lay-verify="required" placeholder="密码"
-                           autocomplete="off" class="layui-input">
+                    <input type="text" name="password" required lay-verify="required" placeholder="密码" autocomplete="off" class="layui-input">
                 </div>
                 <div class="layui-form-item">
                     <div class="layui-inline">
-                        <input type="text" name="verity" required lay-verify="required" placeholder="验证码"
-                               autocomplete="off" class="layui-input">
+                        <input type="text" name="verity" required lay-verify="required" placeholder="验证码" autocomplete="off" class="layui-input">
                     </div>
                     <div class="layui-inline">
-                        <img class="verifyImg" onclick="this.src=this.src+'?c='+Math.random();"
-                             src="./images/login/yzm.jpg"/>
+                        <img class="verifyImg" onclick="this.src=this.src+'?c='+Math.random();" src="./images/login/yzm.jpg"/>
                     </div>
                 </div>
                 <div class="layui-form-item m-login-btn">
