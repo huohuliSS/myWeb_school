@@ -77,6 +77,11 @@ public class BaseController {
         return "system";
     }
 
+    @RequestMapping("/login")
+    public String login(){
+        return "login";
+    }
+
     @RequestMapping("/upload")
     @ResponseBody
     public Result uploadFile(MultipartFile file) {
