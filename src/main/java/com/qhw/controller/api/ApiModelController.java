@@ -1,7 +1,6 @@
-package com.qhw.controller;
+package com.qhw.controller.api;
 
 import com.qhw.common.Result;
-import com.qhw.common.ResultT;
 import com.qhw.pojo.Model;
 import com.qhw.service.ModelService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +14,8 @@ import java.util.List;
  * Created by asus on 2020/3/8  10:06
  */
 @RestController
-@RequestMapping("/model")
-public class ModelController {
+@RequestMapping("/api/model")
+public class ApiModelController {
 
     @Autowired
     private ModelService modelService;
@@ -35,10 +34,10 @@ public class ModelController {
     public Result addModel(Model model) {
         try {
             modelService.save(model);
-            return new Result(true, "模块保存成功！");
+            return new Result(true, "模块保存成功!");
         } catch (Exception e) {
             e.printStackTrace();
-            return new Result(false, "添加模块失败！");
+            return new Result(false, "添加模块失败!");
         }
     }
 
@@ -46,7 +45,7 @@ public class ModelController {
     public Result<Model> findModelById(@PathVariable Integer id) {
         Model model = modelService.getOne(id);
         if (model != null) {
-            return new Result<>(true, "根据id查询model成功", model);
+            return new Result<>(true, "根据id查询model成功!", model);
         }
         return new Result<>(false, "查询失败");
 
@@ -74,7 +73,7 @@ public class ModelController {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            return new Result<>(false, "修改状态失败！");
+            return new Result<>(false, "修改状态失败!");
         }
     }
 

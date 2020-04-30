@@ -1,11 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+<!--xmlns:th="http://www.thymeleaf.org"-->
+<html lang="en"  xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
     <title>后台登录</title>
     <link rel="stylesheet" type="text/css" href="./layui/css/layui.css"/>
     <link rel="stylesheet" type="text/css" href="./css/login.css"/>
+    <script src="./js/jquery.js"></script>
 </head>
 
 <body>
@@ -18,19 +20,23 @@
                     <input type="text" name="username" required lay-verify="required" placeholder="用户名" autocomplete="off" class="layui-input">
                 </div>
                 <div class="layui-form-item">
-                    <input type="text" name="password" required lay-verify="required" placeholder="密码" autocomplete="off" class="layui-input">
+                    <input type="password" name="password" required lay-verify="required" placeholder="密码" autocomplete="off" class="layui-input">
                 </div>
+                <span class="help-block" style="color: red" th:if="${param.error}" th:text="用户名或密码错误，请重新输入！"></span>
                 <div class="layui-form-item">
-                    <div class="layui-inline">
-                        <input type="text" name="verity" required lay-verify="required" placeholder="验证码" autocomplete="off" class="layui-input">
+                    <div class="layui-inline" style="float: left">
+                        <!--<input id="code" placeholder="验证码" required type="text" class="" style="width:170px">-->
+                        <input type="text" id="code" name="verity" required
+                               lay-verify="required|confirmCode" placeholder="验证码" autocomplete="off" class="layui-input">
                     </div>
-                    <div class="layui-inline">
-                        <img class="verifyImg" onclick="this.src=this.src+'?c='+Math.random();" src="./images/login/yzm.jpg"/>
+                    <div class="layui-inline" id="verimg">
+                        <img class="verifyImg" οnclick="javascript:getvCode()" id="verifyimg"/>
+                        <!--<img class="verifyImg" onclick="this.src=this.src+'?c='+Math.random();" src="./images/login/yzm.jpg"/>-->
                     </div>
                 </div>
                 <div class="layui-form-item m-login-btn">
                     <div class="layui-inline">
-                        <button class="layui-btn layui-btn-normal">登录</button>
+                        <button class="layui-btn layui-btn-normal" lay-submit >登录</button>
                     </div>
                     <div class="layui-inline">
                         <button type="reset" class="layui-btn layui-btn-primary">取消</button>
@@ -43,29 +49,52 @@
 </div>
 <script src="./layui/layui.js" type="text/javascript" charset="utf-8"></script>
 <script>
-    layui.use(['form', 'layedit', 'laydate'], function () {
-        var form = layui.form(),
-            layer = layui.layer;
+    getvCode();
+    function getvCode() {
+        document.getElementById("verifyimg").src = timestamp("http://localhost:8080/api/verifyCode");
+    }
+    //为url添加时间戳
+    function timestamp(url) {
+        var getTimestamp = new Date().getTime();
+        if (url.indexOf("?") > -1) {
+            url = url + "&timestamp=" + getTimestamp
+        } else {
+            url = url + "?timestamp=" + getTimestamp
+        }
+        return url;
+    }
 
+    layui.use(['form', 'layedit', 'laydate', 'jquery'], function () {
+        var $ = layui.jquery, form = layui.form(), layer = layui.layer;
+        $('#verifyimg').click(function () {
+            getvCode();
+        });
 
         //自定义验证规则
         form.verify({
-            title: function (value) {
-                if (value.length < 5) {
-                    return '标题至少得5个字符啊';
-                }
-            },
-            password: [/(.+){6,12}$/, '密码必须6到12位'],
-            verity: [/(.+){6}$/, '验证码必须是6位'],
-
+            confirmCode: function (value) {
+                var code = $('#code').val();
+                var msg = '';
+                $.ajax({
+                    type : 'get',
+                    url : './api/VerifyCodeIsEquals?code=' + code,
+                    async : false,
+                    success : function (data) {
+                        if (!data.status)
+                            msg = data.msg;
+                    }
+                });
+                return msg;
+            }
+            // password: [/(.+){6,12}$/, '密码必须6到12位'],
+            // verity: [/(.+){6}$/, '验证码必须是6位'],
         });
-
 
         //监听提交
         form.on('submit(login)', function (data) {
-            layer.alert(JSON.stringify(data.field), {
-                title: '最终的提交信息'
-            })
+            // layer.alert(JSON.stringify(data.field), {
+            //     title: '最终的提交信息'
+            // });
             return false;
         });
 

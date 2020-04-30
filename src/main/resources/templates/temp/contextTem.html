@@ -11,7 +11,7 @@
                 var sourceUrl = $(this).attr("href");
                 var title = $(this).attr("title");
                 //下载资源
-                var sourceUploadURL = "http://localhost:8080/context/downloadAttactment";
+                var sourceUploadURL = "http://localhost:8080/api/context/downloadAttactment";
                 $("#sourceUploadForm").attr('action', sourceUploadURL);
                 $("#sourceUrl").val(sourceUrl);
                 $('#title').val(title);

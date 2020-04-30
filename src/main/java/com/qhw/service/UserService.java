@@ -17,6 +17,8 @@ public interface UserService {
     //2.根据主键查询单个对象。
     User getOne(Integer id);
 
+    User findUserByUsername(String username);
+
     //4.添加单个对象
     void save(User obj);
 

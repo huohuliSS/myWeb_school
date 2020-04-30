@@ -71,7 +71,8 @@
                     <i class="iconfont">&#xe606;</i>用户信息</a>
             </li>
             <li class="layui-nav-item">
-                <a href="./email" target="iframe10" data-url="email.html" data-id='10' data-text="邮件系统"><i class="iconfont">&#xe603;</i>邮件系统</a>
+                <a href="./email" target="iframe10" data-url="email.html" data-id='10' data-text="邮件系统">
+                    <i class="iconfont">&#xe603;</i>邮件系统</a>
             </li>
             <li class="layui-nav-item">
                 <a href="./system" target="iframe11" data-url="system.html" data-id='11' data-text="系统设置">
@@ -86,14 +87,12 @@
             <!--<li class="layui-nav-item">-->
                 <!--<a href="javascript:;"><i class="iconfont">&#xe60a;</i>RBAC</a>-->
             <!--</li>-->
-
             <!--<li class="layui-nav-item">-->
                 <!--<a href="javascript:;"><i class="iconfont">&#xe60d;</i>生成静态</a>-->
             <!--</li>-->
             <!--<li class="layui-nav-item">-->
                 <!--<a href="javascript:;"><i class="iconfont">&#xe600;</i>备份管理</a>-->
             <!--</li>-->
-
         </ul>
     </div>
     <!--右侧内容-->
@@ -101,17 +100,15 @@
         <!--头部-->
         <div class="main-layout-header">
             <div class="menu-btn" id="hideBtn">
-                <a href="javascript:;">
-                    <span class="iconfont">&#xe60e;</span>
-                </a>
+                <a href="javascript:;"><span class="iconfont">&#xe60e;</span></a>
             </div>
             <ul class="layui-nav" lay-filter="rightNav">
-                <li class="layui-nav-item"><a href="javascript:;" data-url="email.html" data-id='4' data-text="邮件系统"><i
-                        class="iconfont">&#xe603;</i></a></li>
+                <li class="layui-nav-item">
+                    <a href="./email" target="iframe10" data-url="email.html" data-id='10' data-text="邮件系统"><i class="iconfont">&#xe603;</i></a></li>
                 <li class="layui-nav-item">
                     <a href="javascript:;" data-url="admin-info.html" data-id='5' data-text="个人信息">超级管理员</a>
                 </li>
-                <li class="layui-nav-item"><a href="javascript:;">退出</a></li>
+                <li class="layui-nav-item"><a href="/logout">退出</a></li>
             </ul>
         </div>
         <!--主体内容-->
@@ -123,12 +120,10 @@
                 </ul>
                 <div class="layui-tab-content">
                     <div class="layui-tab-item layui-show" style="background: #f5f5f5;">
-
                         <!--1-->
                         <iframe src="./welcome.html" th:replace="./welcome.html" width="100%" height="100%"
                                 name="iframe" scrolling="auto" class="iframe" framborder="0"></iframe>
                         <!--1end-->
-
                     </div>
                 </div>
             </div>
@@ -140,14 +135,10 @@
     </div>
 </div>
 <script type="text/javascript">
-    var scope = {
-        link: './welcome.html'
-    }
+    var scope = {link: './welcome.html'}
 </script>
-
 <script src="./layui/layui.js" type="text/javascript" charset="utf-8"></script>
 <script src="./js/common.js" type="text/javascript" charset="utf-8"></script>
 <script src="./js/main.js" type="text/javascript" charset="utf-8"></script>
-
 </body>
 </html>

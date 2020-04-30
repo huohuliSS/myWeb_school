@@ -12,7 +12,7 @@ public class MywebProjectApplicationTests {
 
     @Test
     public void contextLoads() {
-        System.out.println(MD5Utils.code("root"));
+        System.out.println(MD5Utils.code("1234"));
     }
 
 }
