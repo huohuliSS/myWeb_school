@@ -47,6 +47,16 @@ public class BaseController {
         return "lunbo";
     }
 
+    @RequestMapping("/friendlink")
+    public String friendlink(){
+        return "friendlink";
+    }
+
+    @RequestMapping("/friendlink-add")
+    public String friendlinkAdd(){
+        return "friendlink-add";
+    }
+
     @RequestMapping("/menu2")
     public String menu2(){
         return "menu2";

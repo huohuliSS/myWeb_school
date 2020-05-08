@@ -49,7 +49,6 @@ public class ModelController {
             return new Result<>(true, "根据id查询model成功", model);
         }
         return new Result<>(false, "查询失败");
-
     }
 
     @RequestMapping("/findByModelNames")

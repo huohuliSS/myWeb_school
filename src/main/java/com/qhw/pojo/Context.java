@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -18,7 +19,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonIgnoreProperties(value = { "hibernateLazyInitializer", "handler" })
-public class Context {
+public class Context implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

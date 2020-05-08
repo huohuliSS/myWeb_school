@@ -55,7 +55,6 @@ public class verifyCodeController {
     @ResponseBody
     public Result VerifyCodeIsEquals(String code, HttpServletRequest request){
         String verifyCode = (String) request.getSession().getAttribute("VerifyCode");
-        System.out.println(code.toUpperCase());
         if (code != null && code.equalsIgnoreCase(verifyCode)) {
             return new Result(true, "验证码正确");
         }

@@ -1,5 +1,7 @@
 package com.qhw.service.impl;
 
+import com.qhw.dao.UserRepository;
+import com.qhw.pojo.User;
 import com.qhw.util.ThymeleafUtils;
 import com.qhw.dao.ContextRepository;
 import com.qhw.pojo.Context;
@@ -11,6 +13,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.thymeleaf.TemplateEngine;
@@ -32,7 +35,6 @@ import java.util.UUID;
  * Created by asus on 2020/3/8  15:34
  */
 @Service
-@Transactional
 public class ContextServiceImpl implements ContextService {
 
     @Value("${CONTEXT_OUT_DIR}")
@@ -40,6 +42,9 @@ public class ContextServiceImpl implements ContextService {
 
     @Autowired
     private ContextRepository contextRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Override
     public List<Context> findAll() {
@@ -127,7 +132,9 @@ public class ContextServiceImpl implements ContextService {
 //            如果创建静态页面成功
         context.setContextPath(newHtmlPath);
 //        获取当前登录的用户id，并设置    ***************************************
-        context.setUserId(1);
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        User userByUsername = userRepository.findUserByUsername(username);
+        context.setUserId(userByUsername.getId());
 
         contextRepository.save(context);
     }
@@ -167,7 +174,7 @@ public class ContextServiceImpl implements ContextService {
             repositoryOne.setRemark(context.getRemark());
             repositoryOne.setTitle(context.getTitle());
 //            获取当前登录用户的id     **************************************
-            repositoryOne.setUserId(2);
+//            repositoryOne.setUserId(2);
 
 //            创建Context对象(存放Model)
             org.thymeleaf.context.Context thContext = new org.thymeleaf.context.Context();
@@ -191,6 +198,7 @@ public class ContextServiceImpl implements ContextService {
     }
 
     @Override
+    @Transactional
     public void save(Context obj) {
         contextRepository.save(obj);
     }

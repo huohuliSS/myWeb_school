@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+    <title>网站后台管理模版</title>
+    <link rel="stylesheet" type="text/css" href="./layui/css/layui.css"/>
+    <link rel="stylesheet" type="text/css" href="./css/admin.css"/>
+</head>
+<body>
+<div class="wrap-container">
+    <form class="layui-form" id="form2" style="width: 90%;padding-top: 20px;">
+        <input type="hidden" id="id" name="id">
+        <div class="layui-form-item">
+            <label class="layui-form-label">链接名称：</label>
+            <div class="layui-input-block">
+                <input type="text" id="linkName" name="linkName" required lay-verify="required" placeholder="请输入友情链接名称"
+                       autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">链接地址：</label>
+            <div class="layui-input-block">
+                <input type="text" id="urlStr" name="urlStr" required lay-verify="required" placeholder="请输入友情链接地址"
+                       autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <!--<div class="layui-form-item">-->
+            <!--<label class="layui-form-label">图标路径：</label>-->
+            <!--<div class="layui-input-block">-->
+                <!--<input type="text" id="img" name="img" placeholder="友情链接图标相对路径" autocomplete="off" class="layui-input">-->
+            <!--</div>-->
+        <!--</div>-->
+        <div class="layui-form-item">
+            <label class="layui-form-label">状态：</label>
+            <div class="layui-input-block">
+                <input type="hidden" id="statusT" name="status">
+                <input type="checkbox" checked id="status" lay-skin="switch" lay-filter="switchTest" lay-text="ON|OFF">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">备注：</label>
+            <div class="layui-input-block">
+                <input type="text" id="remark" name="remark"  placeholder="请输入备注"
+                       autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button id="submit" class="layui-btn layui-btn-normal" lay-submit lay-filter="formDemo">立即提交</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script src="./layui/layui.js" type="text/javascript" charset="utf-8"></script>
+<script>
+    //Demo
+    layui.use(['form', 'layer', 'jquery'], function () {
+        var form = layui.form(), $ = layui.jquery, layer = layui.layer; form.render();
+        // var status = 1;
+        // form.on('switch(switchTest)', function (obj) {
+        //     if (obj.elem.checked) {
+        //         status = 1;
+        //     } else {
+        //         status = 0;
+        //     }
+        // });
+
+        var str = window.location.search;
+        var id = str.substr(str.lastIndexOf("id") + 3, str.length);
+        if (id != 0) {
+            $.ajax({
+                type : 'get',
+                url : './api/friendLink/findFriendLinkById/' + id,
+                dataType : 'json',
+                success : function (data) {
+                    if (data.status) {
+                        $('#id').val(id);
+                        $('#linkName').val(data.t.linkName);
+                        $('#remark').val(data.t.remark);
+                        $('#urlStr').val(data.t.urlStr);
+                        // $('#img').val(data.t.img);
+                        if (data.t.status == 0) {
+                            $('#status').removeAttr('checked');
+                        }
+                    }
+                },
+                error : function () {
+                    alert("加载model失败");
+                }
+            });
+        }
+
+        //监听提交
+        form.on('submit(formDemo)', function (data) {
+            var id = $('#id').val();
+            var linkName = $('#linkName').val();
+            var urlStr = $('#urlStr').val();
+            var remark = $('#remark').val();
+            // var img = $('#img').val();
+            var status = $('#status').prop('checked')? 1 : 0;
+            // var icon = $('#icon').val();  // 图标
+            $.ajax({
+                type: 'post',
+                url: './api/friendLink/addFriendLink',
+                data: {'id' : id,'linkName': linkName,'urlStr' : urlStr ,'img' : img,'remark': remark, 'status': status},
+                dataType: 'json',
+                success: function (data) {
+                    if (data.status) {
+                        layer.msg(data.msg, {icon: 6, time: 1800}, function (i) {
+                            layer.close(i);
+                            window.parent.location.reload();
+                            var index = parent.layer.getFrameIndex(window.name);
+                            parent.layer.close(index);
+                        });
+                    }
+                },
+                error: function (error) {
+                    alert('操作失败');
+                }
+            });
+            return false;
+        });
+    });
+</script>
+</body>
+
+</html>
