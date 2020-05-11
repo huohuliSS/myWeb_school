@@ -5,8 +5,6 @@
 **后台**  springboot + thymeleaf + springsecurity
 **前台**  bootstrap + layui
 
-### 网站首页展示
-![](./img/hebeu_index.png)
-![](./img/hebeu_context.png)
-### 后台管理系统展示
+### 网站首页和后台管理系统图片展示请看img文件夹
+
 
