@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Date;
 
 /**
  * Created by asus on 2020/2/26  9:57
@@ -32,8 +33,17 @@ public class User {
     @Column(name = "phone")
     private String phone;
 
+    @Column(name = "status")
+    private Integer status;
+
+    @Column(name = "sex")
+    private String sex;
+
     @Column(name = "remark")
     private String remark;
+
+    @Column(name = "create_time")
+    private Date createTime;
 
 
 }
