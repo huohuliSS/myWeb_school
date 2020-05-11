@@ -7,4 +7,4 @@
 
 ### 网站首页和后台管理系统图片展示请看img文件夹
 
-![](./img/hebeu_index.png)
+![](https://github.com/huohuliSS/myWeb_school/raw/master/img/hebeu_index.png)
